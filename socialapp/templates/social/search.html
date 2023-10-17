@@ -1,0 +1,21 @@
+<title>Search</title>
+   In tags:
+<br>
+    {% for post in result1 %}
+        <a href="{{  post.get_absolute_url}}"> {{ post.author }} </a>
+        <p>{{ post.description | truncatewords:4  }}</p>
+        <hr>
+        {% empty %}
+        <p>Not Result!!!</p>
+    {% endfor %}
+<hr>
+In description:
+<br>
+    {% for post in result2 %}
+        <a href="{{  post.get_absolute_url}}"> {{ post.author }} </a>
+        <p>{{ post.description | truncatewords:4  }}</p>
+        <hr>
+        {% empty %}
+        <p>Not Result!!!</p>
+    {% endfor %}
+

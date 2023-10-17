@@ -1,0 +1,24 @@
+{% extends 'parents/base.html' %}
+{% block content %}
+{% block title %}post list{% endblock %}
+{% if tag %}
+    <h3>post with tag {{ tag.name }}</h3>
+{% endif %}
+
+{% for post in posts %}
+    <a href="{{ post.get_absolute_url }}">{{ post.description|truncatewords:20|linebreaks }}</a>
+    <br>
+    Published at {{ post.created }} by {{ post.author }}
+    <br>
+     {% for tag in post.tag.all %}
+           <a href="{% url 'socialapp:post_list_by_tag' tag.slug %}"> {{ tag.name }}</a>
+         {% if not forloop.last %} ,{% endif %}
+
+     {% endfor %}
+    <br>
+     <a href="{% url 'socialapp:post_comment' post.id %}">comment</a>
+
+    <hr>
+{% endfor %}
+
+{% endblock %}

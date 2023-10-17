@@ -1,0 +1,23 @@
+{{ post.description |linebreaks }}
+Published at {{ post.created}} by {{ post.author}}
+<br>
+
+{% for tag in post.tag.all %}
+    <a href="{% url 'socialapp:post_list_by_tag' tag.slug %}"> {{ tag.name }}</a>
+    {% if not forloop.last %}, {% endif %}
+
+{% endfor %}
+<br>
+    <a href="{% url 'socialapp:edit_post' post.id%}">Edit post</a><br>
+    <a href="{% url 'socialapp:delete_post' post.id%}">Delete post</a>
+
+
+
+<h2>Similar Posts</h2>
+{% for post in similar_post %}
+    <p>
+    <a href="{{ post.get_absolute_url }}">{{ post.description |truncatewords:10 }}</a>"
+    </p>
+{% empty %}
+    There are no similar posts
+{% endfor %}

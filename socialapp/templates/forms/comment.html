@@ -1,0 +1,18 @@
+
+
+{% block title %}post comment{% endblock %}
+
+{% block content %}
+
+    {% if comment %}
+        Your comment has been registered.
+        <br>
+        <a href="{% url 'socialapp:post_comment' post_id %}">return post</a>
+    {% else %}
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Add comment">
+    </form>
+    {% endif %}
+{% endblock %}
