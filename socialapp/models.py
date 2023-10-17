@@ -41,7 +41,7 @@ class Post(models.Model):
     # tag
     tag = TaggableManager()
     # image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
-    likes = models.ManyToManyField(User, related_name='like_posts', blank=True)
+    likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
 
     class Meta:
         ordering = ['-created']

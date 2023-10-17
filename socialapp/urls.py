@@ -30,6 +30,7 @@ urlpatterns = [
     path('search', views.post_search, name="post_search"),
     path('edit_post/<post_id>', views.edit_post, name="edit_post"),
     path('delete_post/<post_id>', views.delete_post, name="delete_post"),
+    path('like_post/', views.like_post, name='like_post'),
 
 
 

@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from .forms import *
 from taggit.models import Tag
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery, TrigramSimilarity
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -148,7 +150,7 @@ def post_search(request):
             search_query = SearchQuery(query)
             result1 = Post.objects.filter(tag__name__in=[query])
             result2 = Post.objects.annotate(similarity=TrigramSimilarity('description', query)). \
-                filter(similarity__gt=0.1).order_by('-similarity')# darage sacht giri
+                filter(similarity__gt=0.1).order_by('-similarity')  # darage sacht giri
 
             context = {
                 'query': query,
@@ -182,3 +184,28 @@ def delete_post(request, post_id):
         return redirect("socialapp:post_list")
     return render(request, 'forms/delete_post.html', {'post': post})
 
+
+@login_required
+@require_POST
+def like_post(request):
+    post_id = request.POST.get('post_id')
+    if post_id is not None:
+        post = get_object_or_404(Post, id=post_id)
+        user = request.user
+
+        if user in post.likes.all():
+            post.likes.remove(user)
+            liked = False
+        else:
+            post.likes.add(user)
+            liked = True
+
+        post_likes_count = post.likes.count()
+        response_data = {
+            'liked': liked,
+            'likes_count': post_likes_count,
+        }
+    else:
+        response_data = {'error': 'Invalid post_id'}
+
+    return JsonResponse(response_data)

@@ -2,6 +2,21 @@
 Published at {{ post.created}} by {{ post.author}}
 <br>
 
+<div class="post" data-post-id="{{ post.id }}">
+    {{ post.description |linebreaks }}
+	Published at {{ post.created}} by {{ post.author}}
+	<br><br>
+    <button class="like-button">
+        {% if request.user in post.likes.all%}
+            UnLike
+        {% else %}
+            Like
+        {% endif %}
+    </button>
+	<span class="likes-count">{{ post.likes.count }}</span> Likes
+</div>
+
+
 {% for tag in post.tag.all %}
     <a href="{% url 'socialapp:post_list_by_tag' tag.slug %}"> {{ tag.name }}</a>
     {% if not forloop.last %}, {% endif %}
@@ -21,3 +36,48 @@ Published at {{ post.created}} by {{ post.author}}
 {% empty %}
     There are no similar posts
 {% endfor %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('.like-button').click(function() {
+			var post_id = $(this).closest('.post').data('post-id');
+            var  button = $(this);
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'socialapp:like_post' %}',
+                data: {'post_id': post_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                success: function(data) {
+                    if (data.liked){
+                        button.text('UnLike');
+                    } else {
+                        button.text('Like');
+                    }
+                    $('.likes-count').text(data.likes_count);
+                },
+            });
+        });
+
+        $(".save-post").click(function () {
+            var button = $(this);
+            $.ajax({
+                type: "POST",
+                url: "/save-post/",
+                data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'post_id': {{post.id}} },
+                success: function (data) {
+                    if (data.saved) {
+                        button.text("Unsave");
+                    } else {
+                        button.text("Save");
+                    }
+                },
+                error: function (error) {
+                    console.log("خطا در ارسال درخواست Ajax: " + error);
+                }
+            });
+        });
+
+    });
+</script>
