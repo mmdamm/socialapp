@@ -53,11 +53,11 @@ def register(request):
         form = UserRigesterForm(request.POST)
         if form.is_valid():
             user = form.save(
-                commit=False)  # da vaghe chon dar form in ghestmat password v password 2 darim v dakhel fild nistan va khodemon igadesh kardim inga faght ye save mizanim v ba commit=false nemisarim dar database igad beshe faghat igad mishe ke on fild haye password ro meghdar dehi v baresi konim
+                commit=False)  
             user.set_password(form.cleaned_data['password'])
-            user.save()  # v hala inga dige save kamel ro mizanim ta dar database ham igad beshe
+            user.save()
             Account.objects.create(
-                user=user)  # har karbari ke sabtnam mikone dar vaghe bayadd yek accnout ham barash sakhte  beshe
+                user=user)
             return render(request, 'registration/register_done.html', {'user': user})
     else:
         form = UserRigesterForm()
@@ -163,7 +163,7 @@ def post_search(request):
             search_query = SearchQuery(query)
             result1 = Post.objects.filter(tag__name__in=[query])
             result2 = Post.objects.annotate(similarity=TrigramSimilarity('description', query)). \
-                filter(similarity__gt=0.1).order_by('-similarity')  # darage sacht giri
+                filter(similarity__gt=0.1).order_by('-similarity')
 
             context = {
                 'query': query,
