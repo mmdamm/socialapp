@@ -4,24 +4,27 @@
 {% if tag %}
     <h3>post with tag {{ tag.name }}</h3>
 {% endif %}
-
+<div id ="post-list">
 {% for post in posts %}
-    <a href="{{ post.get_absolute_url }}">{{ post.description|truncatewords:20|linebreaks }}</a>
-    <br>
-    Published at {{ post.created }} by {{ post.author }}
-    <br>
-     {% for tag in post.tag.all %}
-           <a href="{% url 'socialapp:post_list_by_tag' tag.slug %}"> {{ tag.name }}</a>
-         {% if not forloop.last %} ,{% endif %}
+    <a href="{{ post.get_absolute_url }}">
+    	{{ post.description |truncatewords:20|linebreaks }}
+    </a>
+    Published at {{ post.created}} by {{ post.author}}
 
-     {% endfor %}
-    <br>
-     <a href="{% url 'socialapp:post_comment' post.id %}">comment</a>
 
+    <br>
+    {% for tag in post.tags.all %}
+        <a href="{% url 'socialapp:post_list_by_tag' tag.slug %}"> {{ tag.name }}</a>
+        {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    <br>
+    <br>
     <hr>
 {% endfor %}
 
-{% endblock %}
+</div>
+
+
 
 
 <button id="load-more">read more</button>
@@ -33,7 +36,7 @@
         $('#load-more').click(function(){
             $.ajax({
                 type : 'GET',
-                url : "{% if tag %}{% url 'sociaapp:post_list_by_tag' tag.slug %}{% else %}{% url 'socialapp:post_list' %}{% endif %}" + "?page=" + page,
+                url : "{% if tag %}{% url 'socialapp:post_list_by_tag' tag.slug %}{% else %}{% url 'socialapp:post_list' %}{% endif %}" + "?page=" + page,
                 dataType : 'html',
                 success : function(data){
                     $('#post-list').append(data);
@@ -43,3 +46,4 @@
         });
     });
 </script>
+{% endblock %}
