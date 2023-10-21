@@ -1,5 +1,16 @@
-{{ author}} you are login
+{{ author.first_name}} you are login
+<br>
 <br>
 <br>
 
 the number of posts from you: {{ posts.count }}
+<h4>saved post:</h4>
+<ul>
+    {% for post in saved_posts %}
+    <a href="{{ post.get_absolute_url }}">
+    	{{ post.description |truncatewords:20|linebreaks }}
+    </a>
+    Published at {{ post.created}} by {{ post.author}}
+        <br><br><hr>
+    {% endfor %}
+</ul>

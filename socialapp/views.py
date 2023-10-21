@@ -20,11 +20,13 @@ def log_out(request):
 
 
 def profile(request):
-    author = request.user.username
+    author = request.user
+    saved_posts = author.save_post.all()
     posts = Post.objects.filter(author__username=author)
     context = {
         'author': author,
-        'posts': posts
+        'posts': posts,
+        'saved_posts': saved_posts
     }
 
     return render(request, 'social/profile.html', context)
@@ -220,3 +222,22 @@ def like_post(request):
         response_data = {'error': 'Invalid post_id'}
 
     return JsonResponse(response_data)
+
+
+@login_required
+@require_POST
+def save_post(request):
+    post_id = request.POST.get('post_id')
+    if post_id is not None:
+        post = Post.objects.get(id=post_id)
+        user = request.user
+
+        if user in post.saved.all():
+            post.saved.remove(user)
+            saved = False
+        else:
+            post.saved.add(user)
+            saved = True
+
+        return JsonResponse({'saved': saved})
+    return JsonResponse({'error': 'Invalid request'})

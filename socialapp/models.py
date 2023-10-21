@@ -15,7 +15,8 @@ class User(AbstractUser):
     job = models.CharField(max_length=250, null=True, blank=True)
     phone = models.CharField(max_length=11, null=True, blank=True)
 
-
+    def __str__(self):
+        return self.first_name
 class Account(models.Model):
     user = models.OneToOneField(User, related_name="account", on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -25,7 +26,7 @@ class Account(models.Model):
     job = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user
 
 
 class Post(models.Model):
@@ -42,14 +43,14 @@ class Post(models.Model):
     tag = TaggableManager()
     # image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
     likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
+    saved = models.ManyToManyField(User, related_name='save_post', blank=True)
 
     class Meta:
         ordering = ['-created']
         indexes = [models.Index(fields=['-created'])]
 
     def __str__(self):
-        return self.author.username
-
+        return self.author.first_name
     def get_absolute_url(self):
         return reverse('socialapp:post_detail', args=[self.id])
 

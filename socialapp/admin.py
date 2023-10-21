@@ -8,7 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ['username', 'phone', 'first_name', 'last_name']
+    list_display = ['first_name', 'last_name', 'phone', 'username']
     fieldsets = UserAdmin.fieldsets + (
         ('Additional Information', {'fields': ('date_of_birth', 'bio', 'photo', 'job', 'phone')}),
     )

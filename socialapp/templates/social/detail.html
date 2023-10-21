@@ -1,11 +1,11 @@
-{{ post.description |linebreaks }}
-Published at {{ post.created}} by {{ post.author}}
-<br>
+
 
 <div class="post" data-post-id="{{ post.id }}">
     {{ post.description |linebreaks }}
+
 	Published at {{ post.created}} by {{ post.author}}
 	<br><br>
+
     <button class="like-button">
         {% if request.user in post.likes.all%}
             UnLike
@@ -15,16 +15,28 @@ Published at {{ post.created}} by {{ post.author}}
     </button>
 	<span class="likes-count">{{ post.likes.count }}</span> Likes
 </div>
-
-
+<hr>
+Tags:
 {% for tag in post.tag.all %}
     <a href="{% url 'socialapp:post_list_by_tag' tag.slug %}"> {{ tag.name }}</a>
     {% if not forloop.last %}, {% endif %}
 
 {% endfor %}
-<br>
+<hr>
     <a href="{% url 'socialapp:edit_post' post.id%}">Edit post</a><br>
     <a href="{% url 'socialapp:delete_post' post.id%}">Delete post</a>
+
+
+<hr>
+<button class="save-post">
+    {% if request.user in post.saved.all %}
+        Unsave
+    {% else %}
+        Save
+    {% endif %}
+</button>
+
+<br>
 
 
 
@@ -64,7 +76,7 @@ Published at {{ post.created}} by {{ post.author}}
             var button = $(this);
             $.ajax({
                 type: "POST",
-                url: "/save-post/",
+                url: "{% url 'socialapp:save_post' %}",
                 data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'post_id': {{post.id}} },
                 success: function (data) {
                     if (data.saved) {
@@ -74,7 +86,7 @@ Published at {{ post.created}} by {{ post.author}}
                     }
                 },
                 error: function (error) {
-                    console.log("خطا در ارسال درخواست Ajax: " + error);
+                    console.log("Error from sent ajax " + error);
                 }
             });
         });
