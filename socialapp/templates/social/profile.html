@@ -1,9 +1,16 @@
-{{ author.first_name}} you are login
-<br>
-<br>
-<br>
-
-the number of posts from you: {{ posts.count }}
+{% load static %}
+{% load thumbnail %}
+{% with user=request.user %}
+    {% if user.photo  %}
+        <a src="{{ user.photo.url}}">
+        <img src="{% thumbnail user.photo 200x0 quality=80 %}" >
+        </a>
+    {% else %}
+        <img src="{% static 'image/profile/Avatar.png' %} " style="width:200px" height="150" >
+    {% endif %}
+{% endwith %}
+<p>{{ author.first_name}} you are login</p>
+<hr>
 <h4>saved post:</h4>
 <ul>
     {% for post in saved_posts %}

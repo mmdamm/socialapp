@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'taggit',
+    'easy_thumbnails',
 
 ]
 
@@ -166,3 +167,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = 'ibnytyrbhzbcvpzz'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+THUMBNAIL_DEBUG = True
