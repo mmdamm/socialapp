@@ -24,7 +24,6 @@ urlpatterns = [
     path('posts/create_post', views.create_post, name="create_post"),
     path('posts/<slug:tag_slug>', views.post_list, name='post_list_by_tag'),
     path('posts/detail/<int:pk>', views.post_detail, name='post_detail'),
-    #tamrin
     path('posts/detail/comment/<post_id>', views.post_comment_user, name='post_comment'),
     path('posts/detail/comment/add/<post_id>', views.post_comment, name='post_comment_add'),
     path('search', views.post_search, name="post_search"),
@@ -32,6 +31,7 @@ urlpatterns = [
     path('delete_post/<post_id>', views.delete_post, name="delete_post"),
     path('like_post/', views.like_post, name='like_post'),
     path('save_post/', views.save_post, name='save_post'),
+    path('user_list/', views.user_list, name='user_list'),
 
 
 
