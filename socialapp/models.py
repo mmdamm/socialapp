@@ -18,16 +18,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-class Account(models.Model):
-    user = models.OneToOneField(User, related_name="account", on_delete=models.CASCADE)
-    date_of_birth = models.DateField(blank=True, null=True)
-    bio = models.TextField(max_length=200, blank=True, null=True)
-    photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=100, crop=['middle', 'center'],
-                              blank=True, null=True)
-    job = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return self.user
 
 
 class Post(models.Model):
@@ -54,7 +44,6 @@ class Post(models.Model):
         return self.author.first_name
     def get_absolute_url(self):
         return reverse('socialapp:post_detail', args=[self.id])
-
     # def delete(self, *args, **kwargs):
     #     storage, path = self.image_file.storage, self.image_file.path
     #     storage.delete(path)

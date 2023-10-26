@@ -1,0 +1,19 @@
+{% load thumbnail %}
+{% load static %}
+{% load thumbnail %}
+
+    {% if user.photo %}
+        <a href="{{user.get_absolute_url}}">
+            <img src="{% thumbnail user.photo 150x0 quality=90 %}">
+        </a>
+    {% else %}
+        <a href="{{user.get_absolute_url}}">
+		    <img src="{% static 'image/profile/Avatar.png' %}" style="width: 200px;">
+	    </a>
+    {% endif %}
+    <p>Bio:{{ user.bio |default:'---'}}</p>
+    <p>Job:{{ user.job|default:'---' }}</p>
+    <p>Date:{{ user.date_of_birth |default:'---'}}</p>
+    <p>followers:{{ user.followers.count }} following:{{ user.following.count }}</p>
+
+

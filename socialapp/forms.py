@@ -42,11 +42,6 @@ class UserEditForm(forms.ModelForm):
         fields = ['first_name','last_name','email']
 
 
-class AccountEditForm(forms.ModelForm):
-    class Meta:
-        model = Account
-        fields = ['date_of_birth', 'bio', 'job', 'photo']
-
 
 class CreatePostForm(forms.ModelForm):
     class Meta:
