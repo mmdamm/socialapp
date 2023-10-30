@@ -19,7 +19,6 @@ urlpatterns = [
          name="password_reset_confirm"),
     path('password-reset/complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('register/', views.register, name='register'),
-    path('register/edit', views.edit_account, name='edit_account'),
     path('posts/', views.post_list, name='post_list'),
     path('posts/create_post', views.create_post, name="create_post"),
     path('posts/<slug:tag_slug>', views.post_list, name='post_list_by_tag'),
