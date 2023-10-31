@@ -62,7 +62,7 @@ def register(request):
 
 
 def post_list(request, tag_slug=None):
-    posts = Post.objects.all()
+    posts = Post.objects.select_related('author').order_by('-total_likes')
     tag = None
     page = request.GET.get('page', 1)
     paginator = Paginator(posts, 2)

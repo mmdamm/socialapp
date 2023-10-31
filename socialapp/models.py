@@ -35,13 +35,16 @@ class Post(models.Model):
     # image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
     likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
     saved = models.ManyToManyField(User, related_name='save_post', blank=True)
+    total_likes = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['-created']
-        indexes = [models.Index(fields=['-created'])]
+        indexes = [models.Index(fields=['-created']),
+                   models.Index(fields=['-total_likes'])]
 
     def __str__(self):
         return self.author.first_name
+
     def get_absolute_url(self):
         return reverse('socialapp:post_detail', args=[self.id])
     # def delete(self, *args, **kwargs):
