@@ -1,13 +1,12 @@
-<title> Ticket Form </title>
-<h1 class="post-list">Ticket</h1>
-    {% if sent %}
-        <h4>Email von dir zu Unterstützung schiecken.</h4>
-    {% endif %}
+{% extends 'parents/base.html' %}
+{% block title %}Ticket{% endblock %}
+{% block content %}
     <form method="post">
     {% csrf_token %}
-
     {{ form.as_ul }}
         <input type="submit" value="save ticket" >
-
     </form>
+    {% include 'partials/footer.html' %}
+{% endblock %}
+
 

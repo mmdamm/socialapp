@@ -9,6 +9,7 @@ from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 
 
 # Create your views here.
@@ -33,7 +34,7 @@ def profile(request):
 
 
 def ticket(request):
-    sent = False
+    # sent = False
     if request.method == "POST":
         form = TicketForm(request.POST)
         if form.is_valid():
@@ -41,11 +42,12 @@ def ticket(request):
             message = f"{cd['name']}\n{cd['email']}\n{cd['phone']}\n\n{cd['message']}"
             send_mail(cd['subject'], message, 'mohammad2547mohseny@gamil.com', ['mmhsny429@gamil.com'],
                       fail_silently=False)
-            sent = True
-
+            messages.success(request, 'Your comment has been sent successfully. ')
+            messages.error(request, 'Error')
+            messages.warning(request,'warning!!!')
     else:
         form = TicketForm()
-    return render(request, "forms/ticket.html", {'form': form, 'sent': sent})
+    return render(request, "forms/ticket.html", {'form': form})
 
 
 def register(request):
