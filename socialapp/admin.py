@@ -14,6 +14,14 @@ class UserAdmin(UserAdmin):
     )
 
 
+def make_activation(modeladmin, request, queryset):
+    result = queryset.update(active=False)
+    modeladmin.message_user(request,f'{result}post were rejected')
+
+
+make_activation.short_description = 'reject'
+
+
 @admin.register(Post)
 class Postadmin(admin.ModelAdmin):
     list_display = ['author', 'created']
@@ -21,6 +29,7 @@ class Postadmin(admin.ModelAdmin):
     list_filter = ['author', 'created']
     search_fields = ['created']
     raw_id_fields = ['author']
+    actions = [make_activation]
 
 
 @admin.register(Comment)
@@ -33,4 +42,4 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ['user_from','user_to']
+    list_display = ['user_from', 'user_to']

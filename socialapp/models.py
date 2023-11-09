@@ -35,6 +35,7 @@ class Post(models.Model):
     # image_file = ResizedImageField(upload_to="post_images/", size=[600, 400], quality=100, crop=['middle', 'center'])
     likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
     saved = models.ManyToManyField(User, related_name='save_post', blank=True)
+    active = models.BooleanField(default=True)
     total_likes = models.PositiveIntegerField(default=0)
 
     class Meta:

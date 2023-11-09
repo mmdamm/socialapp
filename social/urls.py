@@ -21,6 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('socialapp.urls', namespace='socialapp'))
+    path('', include('socialapp.urls', namespace='socialapp')),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
