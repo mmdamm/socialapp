@@ -16,7 +16,7 @@ class UserAdmin(UserAdmin):
 
 def make_activation(modeladmin, request, queryset):
     result = queryset.update(active=False)
-    modeladmin.message_user(request,f'{result}post were rejected')
+    modeladmin.message_user(request, f'{result}post were rejected')
 
 
 make_activation.short_description = 'reject'
